@@ -23,6 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('user.urls')),
     path('executive/', include('executive.urls')),
+    path('post/', include('post.urls')),
+    path('event/', include('event.urls')),
+    path('activity/', include('activity.urls')),
+    path('alumni/', include('alumni.urls')),
     
     
     path('api/auth/',include('rest_framework.urls')),

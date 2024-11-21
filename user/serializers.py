@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'batch', 'is_admin', 'created_at', 'password', 'confirm_password']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email','student_id', 'batch', 'is_admin', 'created_at', 'password', 'confirm_password']
         extra_kwargs = {
             'password': {'write_only': True},
             'confirm_password': {'write_only': True}
@@ -29,7 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', ''),
             batch=validated_data.get('batch', ''),  # Include batch
-            password=validated_data['password']
+            student_id=validated_data.get('student_id', ''),
+            password=validated_data['password'],
         )
         return user
 
@@ -39,7 +40,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'batch', 'password', 'confirm_password']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'batch','student_id', 'password', 'confirm_password']
 
     def validate(self, data):
         if data['password'] != data['confirm_password']:
@@ -56,6 +57,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', ''),
             batch=validated_data.get('batch', ''),  # Include batch
+            student_id=validated_data.get('student_id', ''),
             password=validated_data['password']
         )
         user.is_active = False

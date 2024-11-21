@@ -4,11 +4,11 @@ from .models import User
 # Custom ModelAdmin for User
 class UserAdmin(admin.ModelAdmin):
     # Fields to display in the list view
-    list_display = ('username', 'email', 'first_name', 'last_name', 'batch', 'is_admin', 'created_at')
+    list_display = ('username', 'email', 'first_name', 'last_name', 'batch','student_id', 'is_admin','status','created_at')
     # Fields to filter by
-    list_filter = ('is_admin', 'batch')
+    list_filter = ('is_admin', 'batch','student_id')
     # Fields to enable searching
-    search_fields = ('username', 'email', 'batch')
+    search_fields = ('username', 'email', 'batch','student_id')
     # Fields to display in the edit form
     fields = ('username', 'email', 'first_name', 'last_name', 'batch', 'is_admin', 'is_staff', 'is_superuser', 'groups', 'password', 'last_login', 'date_joined')
     # Read-only fields
