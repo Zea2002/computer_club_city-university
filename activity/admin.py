@@ -12,7 +12,7 @@ class ParticipantInline(admin.TabularInline):
 @admin.register(Activity)
 class ActivityAdmin(admin.ModelAdmin):
     list_display = ['name', 'activity_type', 'date', 'time', 'location', 'online_link', 'created_at']
-    list_filter = ['activity_type', 'date', 'activity_type']
+    list_filter = ['activity_type', 'date']
     search_fields = ['name', 'description']
     inlines = [ParticipantInline, ResultInline]  # Show participants and results directly in the activity admin
 

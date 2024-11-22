@@ -28,6 +28,7 @@ urlpatterns = [
     path('activity/', include('activity.urls')),
     path('alumni/', include('alumni.urls')),
     path('vote/', include('election.urls')),
+    path('mentor/',include('mentor.urls')),
     
     
     path('api/auth/',include('rest_framework.urls')),
