@@ -56,3 +56,28 @@ class ParticipantListView(APIView):
             })
         except Activity.DoesNotExist:
             return Response({"error": "Activity not found."}, status=status.HTTP_404_NOT_FOUND)
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Activity, Participant
+
+class ParticipantRegistrationView(APIView):
+    def post(self, request, activity_id):
+        try:
+            # Fetch the activity
+            activity = Activity.objects.get(id=activity_id)
+
+            # Check if the user is already registered
+            if Participant.objects.filter(user=request.user, activity=activity).exists():
+                return Response({"error": "You are already registered for this activity."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Create the participant registration for the logged-in user
+            participant = Participant.objects.create(user=request.user, activity=activity)
+
+            return Response({
+                "message": "You have successfully registered for the activity."
+            }, status=status.HTTP_201_CREATED)
+
+        except Activity.DoesNotExist:
+            return Response({"error": "Activity not found."}, status=status.HTTP_404_NOT_FOUND)
