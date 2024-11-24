@@ -13,6 +13,7 @@ class User(AbstractUser):
     batch = models.CharField(max_length=100, null=True, blank=True)  # Add batch field
     student_id=models.CharField(max_length=100, null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+    image=models.ImageField(upload_to='profile_images/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} "

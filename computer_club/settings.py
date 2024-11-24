@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'alumni',
     'election',
     'mentor',
+    'message',
+    'contact_us',
 ]
 
 MIDDLEWARE = [

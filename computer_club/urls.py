@@ -29,6 +29,8 @@ urlpatterns = [
     path('alumni/', include('alumni.urls')),
     path('vote/', include('election.urls')),
     path('mentor/',include('mentor.urls')),
+    path('message/',include('message.urls')),
+    path('contact-us/',include('contact_us.urls')),
     
     
     path('api/auth/',include('rest_framework.urls')),
