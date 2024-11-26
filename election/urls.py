@@ -1,15 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CandidateViewSet, VoteViewSet, ElectionResultView, LiveVoteCountView
+from .views import CandidateViewSet, VoteViewSet
 
-# Router setup
 router = DefaultRouter()
-router.register(r'candidates', CandidateViewSet, basename='candidate')
-router.register(r'votes', VoteViewSet, basename='vote')
+router.register(r'candidates', CandidateViewSet)
+router.register(r'votes', VoteViewSet)
 
-# URL patterns
 urlpatterns = [
-    path('', include(router.urls)),  
-    path('results/', ElectionResultView.as_view(), name='election-results'),  
-    path('live-votes/', LiveVoteCountView.as_view(), name='live-vote-count'),  
+    path('', include(router.urls)),
 ]

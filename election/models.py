@@ -21,23 +21,37 @@ POSITION_CHOICES = [
     ('Alumni Coordinator', 'Alumni Coordinator'),
 ]
 
-# Candidate Model
+# Candidate model
 class Candidate(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    position = models.CharField(max_length=100, choices=POSITION_CHOICES)
-    manifesto = models.TextField(null=True)
+    manifesto = models.TextField(blank=True, null=True)
+    position = models.CharField(max_length=50, choices=POSITION_CHOICES)
+    votes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"{self.user.username} ({self.position})"
+        return f"{self.user.first_name} {self.user.last_name} - {self.position}"
 
-# Vote Model
+    # Update the vote count for the candidate
+    def update_vote_count(self):
+        self.votes = Vote.objects.filter(candidate=self).count()
+        self.save()
+
+
+# Vote model
 class Vote(models.Model):
-    voter = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    position = models.CharField(max_length=100, choices=POSITION_CHOICES)
+    position = models.CharField(max_length=50, choices=POSITION_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('voter', 'position')  # Prevent multiple votes per position
+        unique_together = ('user', 'position')  # One vote per position per user
 
     def __str__(self):
-        return f"{self.voter.username} voted for {self.candidate.user.username} ({self.position})"
+        return f"{self.user.first_name} voted for {self.candidate.position}"
+
+    # Override the save method to update the candidate's vote count
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Update vote count for the candidate after saving the vote
+        self.candidate.update_vote_count()
