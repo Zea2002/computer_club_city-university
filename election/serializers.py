@@ -3,21 +3,17 @@ from .models import Candidate, Vote
 
 class CandidateSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
-    image_url = serializers.SerializerMethodField()
+    image = serializers.ImageField(source='user.image', read_only=True)
 
     class Meta:
         model = Candidate
-        fields = ['id', 'position', 'full_name', 'image_url', 'votes', 'manifesto', 'user']
-        read_only_fields = ['votes']  # Make 'votes' field read-only
+        fields = ['id', 'position', 'full_name', 'image', 'votes', 'manifesto', 'user']
+        read_only_fields = ['votes']
 
     def get_full_name(self, obj):
         return f"{obj.user.first_name} {obj.user.last_name}"
 
-    def get_image_url(self, obj):
-        if obj.user.image:
-            return obj.user.image.url
-        return None
-
+   
 class VoteSerializer(serializers.ModelSerializer):
     candidate_name = serializers.SerializerMethodField()
 
