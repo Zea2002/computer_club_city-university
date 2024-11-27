@@ -58,6 +58,7 @@ class CandidateViewSet(viewsets.ModelViewSet):
                         "full_name": f"{candidate.user.first_name} {candidate.user.last_name}",
                         "manifesto": candidate.manifesto,
                         "votes": candidate.votes,
+                        "image": candidate.user.image,
                     }
                     for candidate in candidates
                 ]
