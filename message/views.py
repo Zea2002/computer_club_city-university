@@ -19,10 +19,9 @@ class MessageViewSet(ModelViewSet):
             return Message.objects.filter(receiver__isnull=True).order_by('-timestamp')
 
     def perform_create(self, serializer):
-        if self.request.user.is_authenticated:
-            serializer.save(sender=self.request.user)
-        else:
-            serializer.save(sender=None)  # If sender is anonymous, set to None or a default value
+    # `sender` ফ্রন্টএন্ড থেকে সরাসরি নেওয়া হবে
+        serializer.save()
+
 
     def retrieve(self, request, *args, **kwargs):
         """Fetch a single message."""
