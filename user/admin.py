@@ -10,7 +10,7 @@ class UserAdmin(admin.ModelAdmin):
     # Fields to enable searching
     search_fields = ('username', 'email', 'batch','student_id')
     # Fields to display in the edit form
-    fields = ('username', 'email', 'first_name', 'last_name', 'batch', 'is_admin', 'is_staff', 'is_superuser', 'groups', 'password', 'last_login', 'date_joined')
+    fields = ('username', 'email', 'first_name', 'last_name','image', 'batch','student_id', 'is_admin','is_active', 'is_staff', 'is_superuser', 'groups', 'password', 'last_login', 'date_joined')
     # Read-only fields
     readonly_fields = ('last_login', 'date_joined', 'created_at')
     # Default ordering
