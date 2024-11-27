@@ -9,7 +9,7 @@ from .serializers import MessageSerializer
 class MessageViewSet(ModelViewSet):
     queryset = Message.objects.all().order_by('-timestamp')
     serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]
+    
 
     def get_queryset(self):
         user = self.request.user
