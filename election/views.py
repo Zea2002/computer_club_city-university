@@ -1,9 +1,9 @@
-import base64
 import logging
 from django.db.models import F, Max
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.conf import settings
 from .models import Candidate, Vote
 from .serializers import CandidateSerializer, VoteSerializer
 
@@ -42,34 +42,34 @@ class CandidateViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def winners(self, request):
         try:
-            winners = (
-                Candidate.objects.values('position')
-                .annotate(max_votes=Max('votes'))
-                .filter(votes=F('max_votes'))
-            )
+            # Find the maximum votes per position
+            positions = Candidate.objects.values('position').annotate(max_votes=Max('votes'))
+
             winners_data = []
-            for winner in winners:
-                position = winner['position']
-                max_votes = winner['max_votes']
-                candidates = Candidate.objects.filter(position=position, votes=max_votes)
+            
+            for position in positions:
+                position_name = position['position']
+                max_votes = position['max_votes']
+
+                # Fetch candidates who have the max votes for that position
+                winners = Candidate.objects.filter(position=position_name, votes=max_votes)
 
                 candidates_data = []
-                for candidate in candidates:
+                for candidate in winners:
+                    # Image URL
+                    image_url = None
                     if candidate.user.image:
-                        with candidate.user.image.open('rb') as image_file:
-                            image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
-                    else:
-                        image_base64 = None
+                        image_url = f"{settings.MEDIA_URL}{candidate.user.image.name}"
 
                     candidates_data.append({
                         "full_name": f"{candidate.user.first_name} {candidate.user.last_name}",
                         "manifesto": candidate.manifesto,
                         "votes": candidate.votes,
-                        "image": image_base64,  
+                        "image": image_url,  
                     })
 
                 winners_data.append({
-                    "position": position,
+                    "position": position_name,
                     "candidates": candidates_data,
                 })
 
