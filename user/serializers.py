@@ -57,7 +57,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', ''),
-            batch=validated_data.get('batch', ''),  # Include batch
+            batch=validated_data.get('batch', ''),  
             student_id=validated_data.get('student_id', ''),
             image=validated_data.get('image', ''),
             password=validated_data['password']
