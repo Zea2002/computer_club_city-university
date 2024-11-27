@@ -13,10 +13,10 @@ class MessageViewSet(ModelViewSet):
         user = self.request.user
         if user.is_authenticated:
             # Logged-in user: Show user-specific and broadcast messages
-            return Message.objects.filter(Q(receiver=user) | Q(receiver__isnull=True)).order_by('-timestamp')
+            return Message.objects.filter(Q(receiver=user) | Q(receiver__isnull=True)).order_by('timestamp')
         else:
             # Anonymous user: Show only broadcast messages
-            return Message.objects.filter(receiver__isnull=True).order_by('-timestamp')
+            return Message.objects.filter(receiver__isnull=True).order_by('timestamp')
 
     def perform_create(self, serializer):
     # `sender` ফ্রন্টএন্ড থেকে সরাসরি নেওয়া হবে
