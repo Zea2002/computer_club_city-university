@@ -9,5 +9,5 @@ class ExecutiveViewSet(viewsets.ModelViewSet):
     queryset = Executive.objects.all()
     serializer_class = ExecutiveSerializer
     filter_backends = [SearchFilter]
-    search_fields = ['name', 'designation']
+    search_fields = ['user__first_name', 'user__last_name', 'designation']
 

@@ -1,6 +1,6 @@
 from django.db import models
+from user.models import User
 
-# Create your models here.
 class Executive(models.Model):
     DESIGNATION_CHOICES = [
         ('President', 'President'),
@@ -21,13 +21,10 @@ class Executive(models.Model):
         ('Alumni Coordinator', 'Alumni Coordinator'),
     ]
 
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=15, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     designation = models.CharField(max_length=50, choices=DESIGNATION_CHOICES)
-    photo = models.ImageField(upload_to='executives/', blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    linkedIn = models.URLField(blank=True, null=True) # Add linkedIn field
+    linkedIn = models.URLField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} ({self.designation})"
+        return f"{self.user.username} ({self.designation})"
